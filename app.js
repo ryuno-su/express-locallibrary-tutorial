@@ -18,6 +18,7 @@ const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 20,
+  validate: {xForwardedForHeader: false}, // disable ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
 });
 // Apply rate limiter to all requests
 app.use(limiter);
@@ -41,7 +42,7 @@ const mongoDB = process.env.MONGODB_URI || dev_db_url;
 main().catch((err) => console.log(err));
 async function main() {
   // await mongoose.connect(mongoDB);
-  await mongoose.connect(mongoDB, { connectTimeoutMS: 30000 });
+  await mongoose.connect(mongoDB, { connectTimeoutMS: 30000 }); // Operation `~` buffering timed out after 10000ms. (無関係かも)
 }
 
 // view engine setup
